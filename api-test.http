@@ -1,0 +1,61 @@
+@baseUrl = http://localhost:5130
+@json = application/json
+
+### GET /api/products
+GET {{baseUrl}}/api/products
+Accept: {{json}}
+
+### POST /api/products
+POST {{baseUrl}}/api/products
+Content-Type: {{json}}
+Accept: {{json}}
+
+{
+  "name": "Test Product",
+  "description": "Created from api-test.http",
+  "price": 1990000,
+  "imageUrl": "https://example.com/image.jpg",
+  "category": "Keyboards",
+  "stock": 10
+}
+
+### GET /api/users
+GET {{baseUrl}}/api/users
+Accept: {{json}}
+
+### POST /api/users
+POST {{baseUrl}}/api/users
+Content-Type: {{json}}
+Accept: {{json}}
+
+{
+  "name": "Postman User",
+  "email": "postman.user@example.com",
+  "password": "123456",
+  "role": "customer"
+}
+
+### POST /api/cartitems
+POST {{baseUrl}}/api/cartitems
+Content-Type: {{json}}
+Accept: {{json}}
+
+{
+  "userId": 1,
+  "productId": 1,
+  "quantity": 2
+}
+
+### POST /api/orders
+POST {{baseUrl}}/api/orders
+Content-Type: {{json}}
+Accept: {{json}}
+
+{
+  "userId": 1,
+  "items": [
+    { "productId": 1, "quantity": 1 },
+    { "productId": 2, "quantity": 2 }
+  ]
+}
+
