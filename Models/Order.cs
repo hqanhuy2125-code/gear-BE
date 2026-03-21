@@ -21,6 +21,11 @@ namespace GamingGearBackend.Models
         
         [Required]
         public string Status { get; set; } = "Pending";
+
+        public string FullName { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string ShippingAddress { get; set; } = string.Empty;
+        public string PaymentMethod { get; set; } = "COD";
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

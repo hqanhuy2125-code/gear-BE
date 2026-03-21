@@ -29,6 +29,19 @@ namespace GamingGearBackend.Controllers
             return Ok(orders);
         }
 
+        [HttpGet("user/{userId:int}")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetByUser(int userId)
+        {
+            var orders = await _db.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.Id)
+                .ToListAsync();
+
+            return Ok(orders);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Order>> GetById(int id)
         {
@@ -44,14 +57,12 @@ namespace GamingGearBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> Create([FromBody] CreateOrderDto dto)
         {
-            var firstUser = await _db.Users.OrderBy(u => u.Id).FirstOrDefaultAsync();
-            if (firstUser == null) return BadRequest(new { message = "No users in database." });
-            dto.UserId = firstUser.Id;
+            // Validate user exists
+            var user = await _db.Users.FindAsync(dto.UserId);
+            if (user == null) return BadRequest(new { message = "User not found." });
 
-            var firstProduct = await _db.Products.OrderBy(p => p.Id).FirstOrDefaultAsync();
-            if (firstProduct == null) return BadRequest(new { message = "No products in database." });
-            foreach (var it in dto.Items)
-                it.ProductId = firstProduct.Id;
+            if (dto.Items == null || dto.Items.Count == 0)
+                return BadRequest(new { message = "Order must have at least one item." });
 
             var productIds = dto.Items.Select(i => i.ProductId).Distinct().ToList();
             var products = await _db.Products
@@ -62,12 +73,18 @@ namespace GamingGearBackend.Controllers
             {
                 UserId = dto.UserId,
                 Status = "Pending",
+                FullName = dto.FullName,
+                PhoneNumber = dto.PhoneNumber,
+                ShippingAddress = dto.ShippingAddress,
+                PaymentMethod = dto.PaymentMethod,
                 CreatedAt = DateTime.UtcNow
             };
 
             foreach (var item in dto.Items)
             {
-                var product = products[item.ProductId];
+                if (!products.TryGetValue(item.ProductId, out var product))
+                    return BadRequest(new { message = $"Product {item.ProductId} not found." });
+
                 order.OrderItems.Add(new OrderItem
                 {
                     ProductId = product.Id,
@@ -81,7 +98,13 @@ namespace GamingGearBackend.Controllers
             _db.Orders.Add(order);
             await _db.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
+            // Re-load with includes to return full data
+            var created = await _db.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .FirstAsync(o => o.Id == order.Id);
+
+            return CreatedAtAction(nameof(GetById), new { id = order.Id }, created);
         }
 
         [HttpPut("{id:int}")]

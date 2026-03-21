@@ -20,6 +20,11 @@ namespace GamingGearBackend.DTOs
         [Required]
         [MinLength(1)]
         public List<CreateOrderItemDto> Items { get; set; } = new();
+
+        public string FullName { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string ShippingAddress { get; set; } = string.Empty;
+        public string PaymentMethod { get; set; } = "COD";
     }
 
     public class UpdateOrderDto

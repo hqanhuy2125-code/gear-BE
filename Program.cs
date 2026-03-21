@@ -32,6 +32,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Configure Scoped Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+// Configure VNPay Services
+builder.Services.Configure<VnPaySettings>(builder.Configuration.GetSection("VnPay"));
+builder.Services.AddScoped<IVnPayService, VnPayService>();
+
 // Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -44,8 +48,8 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     dbContext.Database.Migrate();
 
-    // Seed default admin user if no users exist (BCrypt hash cannot be in HasData).
-    if (!dbContext.Users.Any())
+    // Seed default admin user
+    if (!dbContext.Users.Any(u => u.Email == "hqanhuy@gear.com"))
     {
         dbContext.Users.Add(new User
         {
