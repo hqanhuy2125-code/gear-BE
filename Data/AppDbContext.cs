@@ -1,3 +1,4 @@
+using System;
 using GamingGearBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,14 @@ namespace GamingGearBackend.Data
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Driver> Drivers { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<WishlistItem> WishlistItems { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<OtpCode> OtpCodes { get; set; }
 
         private static readonly DateTime SeedDate = new DateTime(2025, 3, 1, 0, 0, 0, DateTimeKind.Utc);
 
@@ -59,6 +68,18 @@ namespace GamingGearBackend.Data
                 .HasForeignKey(oi => oi.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Product)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(r => r.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Configure Email as unique
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
@@ -69,10 +90,10 @@ namespace GamingGearBackend.Data
             // Seed Products (5 gaming gear)
             modelBuilder.Entity<Product>().HasData(
                 new Product { Id = 1, Name = "Logitech G Pro X Superlight", Description = "Chuột gaming siêu nhẹ", Price = 3500000, ImageUrl = "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&q=80&w=600", Category = "Mice", Stock = 50, CreatedAt = SeedDate },
-                new Product { Id = 2, Name = "Razer Viper V2 Pro", Description = "Chuột gaming không dây", Price = 3200000, ImageUrl = "https://images.unsplash.com/photo-1615663245857-ac93bb552f41?auto=format&fit=crop&q=80&w=600", Category = "Mice", Stock = 30, CreatedAt = SeedDate },
-                new Product { Id = 3, Name = "SteelSeries Apex Pro", Description = "Bàn phím cơ cao cấp switch OmniPoint", Price = 4500000, ImageUrl = "https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=600", Category = "Keyboards", Stock = 20, CreatedAt = SeedDate },
+                new Product { Id = 2, Name = "Razer Viper V2 Pro", Description = "Chuột gaming không dây", Price = 3200000, ImageUrl = "https://images.unsplash.com/photo-1615663245857-ac93bb552f41?auto=format&fit=crop&q=80&w=600", Category = "Mice", Stock = 3, CreatedAt = SeedDate },
+                new Product { Id = 3, Name = "SteelSeries Apex Pro", Description = "Bàn phím cơ cao cấp switch OmniPoint", Price = 4500000, ImageUrl = "https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=600", Category = "Keyboards", Stock = 20, CreatedAt = SeedDate, IsPreOrder = true, PreOrderDate = SeedDate.AddMonths(1) },
                 new Product { Id = 4, Name = "Logitech G Pro Keyboard", Description = "Bàn phím TKL quốc dân", Price = 2800000, ImageUrl = "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=600", Category = "Keyboards", Stock = 40, CreatedAt = SeedDate },
-                new Product { Id = 5, Name = "HyperX Cloud II", Description = "Tai nghe gaming 7.1", Price = 1800000, ImageUrl = "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=600", Category = "Headphones", Stock = 60, CreatedAt = SeedDate }
+                new Product { Id = 5, Name = "HyperX Cloud II", Description = "Tai nghe gaming 7.1", Price = 1800000, ImageUrl = "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=600", Category = "Headphones", Stock = 0, CreatedAt = SeedDate, IsOrderOnly = true }
             );
 
             // Seed Blogs (2)
@@ -86,6 +107,45 @@ namespace GamingGearBackend.Data
                 new Driver { Id = 1, Name = "MADLIONS Gaming Mouse Driver", Description = "Phần mềm tùy chỉnh DPI và Macro", DownloadUrl = "#", Brand = "MADLIONS" },
                 new Driver { Id = 2, Name = "MADLIONS Mechanical Keyboard Driver", Description = "Tùy chỉnh LED RGB và phím", DownloadUrl = "#", Brand = "MADLIONS" }
             );
+
+            // Notifications & Wishlist Relationships
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.User)
+                .WithMany()
+                .HasForeignKey(n => n.UserId);
+
+            modelBuilder.Entity<WishlistItem>()
+                .HasOne(w => w.User)
+                .WithMany()
+                .HasForeignKey(w => w.UserId);
+
+            modelBuilder.Entity<WishlistItem>()
+                .HasOne(w => w.Product)
+                .WithMany()
+                .HasForeignKey(w => w.ProductId);
+
+            // ChatMessages Relationships
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(cm => cm.Sender)
+                .WithMany()
+                .HasForeignKey(cm => cm.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(cm => cm.Receiver)
+                .WithMany()
+                .HasForeignKey(cm => cm.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Performance Indexes
+            modelBuilder.Entity<Product>().HasIndex(p => p.Category);
+            modelBuilder.Entity<Order>().HasIndex(o => o.UserId);
+            modelBuilder.Entity<Order>().HasIndex(o => o.Status);
+            modelBuilder.Entity<CartItem>().HasIndex(ci => ci.UserId);
+            
+            // Decimal precision for Promotion
+            modelBuilder.Entity<Promotion>().Property(p => p.MinOrderValue).HasPrecision(18, 2);
+            modelBuilder.Entity<Promotion>().Property(p => p.MaxDiscount).HasPrecision(18, 2);
         }
     }
 }

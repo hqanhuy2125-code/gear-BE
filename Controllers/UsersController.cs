@@ -8,6 +8,7 @@ namespace GamingGearBackend.Controllers
 {
     [ApiController]
     [Route("api/users")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
     public class UsersController : ControllerBase
     {
         private readonly AppDbContext _db;
@@ -102,6 +103,34 @@ namespace GamingGearBackend.Controllers
 
             _db.Users.Remove(user);
             await _db.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpPut("{id:int}/block")]
+        public async Task<IActionResult> Block(int id)
+        {
+            var user = await _db.Users.FindAsync(id);
+            if (user == null) return NotFound();
+
+            if (user.Role == "admin")
+            {
+                user.Role = "admin_blocked";
+                await _db.SaveChangesAsync();
+            }
+            return NoContent();
+        }
+
+        [HttpPut("{id:int}/unblock")]
+        public async Task<IActionResult> Unblock(int id)
+        {
+            var user = await _db.Users.FindAsync(id);
+            if (user == null) return NotFound();
+
+            if (user.Role == "admin_blocked")
+            {
+                user.Role = "admin";
+                await _db.SaveChangesAsync();
+            }
             return NoContent();
         }
     }

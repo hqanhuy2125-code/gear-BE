@@ -25,6 +25,10 @@ namespace GamingGearBackend.Models
         
         public int Stock { get; set; } = 0;
         
+        public bool IsPreOrder { get; set; } = false;
+        public DateTime? PreOrderDate { get; set; }
+        public bool IsOrderOnly { get; set; } = false;
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [JsonIgnore]
@@ -32,5 +36,8 @@ namespace GamingGearBackend.Models
 
         [JsonIgnore]
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+        [JsonIgnore]
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

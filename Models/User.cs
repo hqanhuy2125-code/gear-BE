@@ -30,5 +30,8 @@ namespace GamingGearBackend.Models
 
         [JsonIgnore]
         public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+
+        [JsonIgnore]
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

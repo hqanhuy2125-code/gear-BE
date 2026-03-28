@@ -26,11 +26,25 @@ namespace GamingGearBackend.DTOs
         public string Password { get; set; } = string.Empty;
     }
 
+    public class GoogleLoginDto
+    {
+        [Required]
+        public string Credential { get; set; } = string.Empty;
+    }
+
     public class UserDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
+        public string Token { get; set; } = string.Empty;
+    }
+
+    public class GoogleLoginResponseDto
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
     }
 }

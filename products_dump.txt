@@ -1,0 +1,42 @@
+﻿1|Mice|Logitech G Pro X Superlight
+2|Mice|Razer Viper V2 Pro
+3|Keyboards|SteelSeries Apex Pro
+4|Keyboards|Logitech G Pro Keyboard
+5|Headphones|HyperX Cloud II
+6|Accessories|string
+7|Accessories|string
+8|Accessories|string
+9|Accessories|string
+10|Accessories|string
+14|Accessories|string
+15|Accessories|string
+16|Accessories|string
+17|Accessories|string
+18|Accessories|string
+19|Accessories|string
+20|Accessories|string
+21|Accessories|string
+34|Keyboards|Neo65
+35|Accessories|850x
+36|Accessories|980pro
+37|Accessories|Nintendo
+38|Accessories|Nintendo
+39|Accessories|Nintendo
+40|Accessories|Nintendo
+41|Keyboards|Mercury K1 Pro
+42|Accessories|980pro
+43|Accessories|980pro
+44|Accessories|980pro
+45|Accessories|980pro
+46|Accessories|850x
+47|Keyboards|Neo65
+48|Headphones|Corsair
+49|Keyboards|Mercury K1 Pro
+50|Keyboards|Neo65
+51|Keyboards|Iqunix
+52|Keyboards|Neo65
+53|Keyboards|Iqunix
+54|Keyboards|Neo65
+55|Keyboards|Iqunix
+56|Keyboards|Neo65
+57|Accessories|Nintendo

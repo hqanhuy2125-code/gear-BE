@@ -1,0 +1,29 @@
+﻿Build started...
+Build succeeded.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'Value' on entity type 'Voucher'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (12ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+20260308083426_InitialCreate
+20260308090051_AddRelationships
+20260321062213_AddOrderCheckoutFields
+20260321092756_AddOrderTimestamps
+20260321120300_AddReviewsAndVouchers
+20260321154041_AddNotificationsAndWishlist
+20260321155530_AddChatMessages
+20260322070731_AddProductLogistics
+20260322080328_AddNickNameReview
+20260322083203_AddPromotionsAndPerformance
+20260322095053_AddRefreshTokens
+20260324073909_UpdateOrderStatus
+20260326060856_AddConfirmedAtToOrder
+20260328075504_AddOtpCodes

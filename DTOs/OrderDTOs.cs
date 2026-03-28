@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace GamingGearBackend.DTOs
 {
@@ -10,6 +11,10 @@ namespace GamingGearBackend.DTOs
         [Required]
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
+
+        public string ProductName { get; set; } = "Unknown Product";
+        public decimal Price { get; set; } = 0;
+        public string ImageUrl { get; set; } = "";
     }
 
     public class CreateOrderDto
@@ -25,6 +30,7 @@ namespace GamingGearBackend.DTOs
         public string PhoneNumber { get; set; } = string.Empty;
         public string ShippingAddress { get; set; } = string.Empty;
         public string PaymentMethod { get; set; } = "COD";
+        public string? VoucherCode { get; set; }
     }
 
     public class UpdateOrderDto

@@ -2,22 +2,29 @@ using GamingGearBackend.Data;
 using GamingGearBackend.DTOs;
 using GamingGearBackend.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using GamingGearBackend.Hubs;
+using System.Security.Claims;
 
 namespace GamingGearBackend.Controllers
 {
     [ApiController]
     [Route("api/orders")]
+    [Microsoft.AspNetCore.Authorization.Authorize] // Allow all authenticated roles
     public class OrdersController : ControllerBase
     {
         private readonly AppDbContext _db;
+        private readonly IHubContext<OrderHub> _orderHub;
 
-        public OrdersController(AppDbContext db)
+        public OrdersController(AppDbContext db, IHubContext<OrderHub> orderHub)
         {
             _db = db;
+            _orderHub = orderHub;
         }
 
         [HttpGet]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<ActionResult<IEnumerable<Order>>> GetAll()
         {
             var orders = await _db.Orders
@@ -57,64 +64,191 @@ namespace GamingGearBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> Create([FromBody] CreateOrderDto dto)
         {
-            // Validate user exists
-            var user = await _db.Users.FindAsync(dto.UserId);
-            if (user == null) return BadRequest(new { message = "User not found." });
-
-            if (dto.Items == null || dto.Items.Count == 0)
-                return BadRequest(new { message = "Order must have at least one item." });
-
-            var productIds = dto.Items.Select(i => i.ProductId).Distinct().ToList();
-            var products = await _db.Products
-                .Where(p => productIds.Contains(p.Id))
-                .ToDictionaryAsync(p => p.Id);
-
-            var order = new Order
+            try 
             {
-                UserId = dto.UserId,
-                Status = "Pending",
-                FullName = dto.FullName,
-                PhoneNumber = dto.PhoneNumber,
-                ShippingAddress = dto.ShippingAddress,
-                PaymentMethod = dto.PaymentMethod,
-                CreatedAt = DateTime.UtcNow
-            };
+                var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userIdStr)) return Unauthorized(new { message = "User not authenticated." });
+                var userId = int.Parse(userIdStr);
 
-            foreach (var item in dto.Items)
-            {
-                if (!products.TryGetValue(item.ProductId, out var product))
-                    return BadRequest(new { message = $"Product {item.ProductId} not found." });
+                // Validate user exists
+                var user = await _db.Users.FindAsync(userId);
+                if (user == null) return BadRequest(new { message = "User not found." });
 
-                order.OrderItems.Add(new OrderItem
+                if (dto.Items == null || dto.Items.Count == 0)
+                    return BadRequest(new { message = "Order must have at least one item." });
+
+                var productIds = dto.Items.Select(i => i.ProductId).Distinct().ToList();
+                var products = await _db.Products
+                    .Where(p => p.Id > 0 && productIds.Contains(p.Id))
+                    .ToDictionaryAsync(p => p.Id);
+
+                string initialStatus = "Pending";
+                if (!string.IsNullOrEmpty(dto.PaymentMethod))
                 {
-                    ProductId = product.Id,
-                    Quantity = item.Quantity,
-                    Price = product.Price
+                    var pm = dto.PaymentMethod.ToLower();
+                    if (pm.Contains("banking")) initialStatus = "Chờ thanh toán";
+                    else if (pm.Contains("cod")) initialStatus = "Chờ xác nhận";
+                    else if (pm.Contains("momo") || pm.Contains("vnpay")) initialStatus = "Đã thanh toán";
+                }
+
+                var order = new Order
+                {
+                    UserId = userId,
+                    Status = initialStatus,
+                    FullName = dto.FullName,
+                    PhoneNumber = dto.PhoneNumber,
+                    ShippingAddress = dto.ShippingAddress,
+                    PaymentMethod = dto.PaymentMethod,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                foreach (var item in dto.Items)
+                {
+                    if (!products.TryGetValue(item.ProductId, out var product))
+                    {
+                        product = new Product
+                        {
+                            Name = string.IsNullOrWhiteSpace(item.ProductName) ? "Unknown Product" : item.ProductName,
+                            Price = item.Price > 0 ? item.Price : 500000,
+                            ImageUrl = item.ImageUrl ?? "",
+                            Description = "Auto-created",
+                            Category = "Uncategorized",
+                            Stock = 100,
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        _db.Products.Add(product);
+                        // Save here to get ID for next items if shared (though usually products are distinct in DTO)
+                        await _db.SaveChangesAsync();
+                        products[product.Id] = product;
+                    }
+
+                    if (!product.IsPreOrder && !product.IsOrderOnly)
+                    {
+                        if (product.Stock < item.Quantity)
+                        {
+                            return BadRequest(new { message = $"Sản phẩm '{product.Name}' không đủ tồn kho." });
+                        }
+                        product.Stock -= item.Quantity;
+                    }
+
+                    order.OrderItems.Add(new OrderItem
+                    {
+                        ProductId = product.Id,
+                        Quantity = item.Quantity,
+                        Price = product.Price
+                    });
+                }
+
+                if (dto.Items.Any(i => products.TryGetValue(i.ProductId, out var p) && p.IsOrderOnly))
+                {
+                    order.Status = "Đang xử lý order";
+                }
+
+                order.TotalPrice = order.OrderItems.Sum(x => x.Price * x.Quantity);
+
+                // Voucher & Promotion Logic
+                if (!string.IsNullOrEmpty(dto.VoucherCode))
+                {
+                    var voucher = await _db.Vouchers.FirstOrDefaultAsync(v => v.Code == dto.VoucherCode);
+                    if (voucher != null && voucher.ExpiryDate > DateTime.UtcNow && (voucher.MaxUsages == 0 || voucher.UsedCount < voucher.MaxUsages))
+                    {
+                        if (voucher.Type == "percent")
+                        {
+                            order.TotalPrice -= order.TotalPrice * (voucher.Value / 100m);
+                        }
+                        else
+                        {
+                            order.TotalPrice -= voucher.Value;
+                        }
+                        if (order.TotalPrice < 0) order.TotalPrice = 0;
+                        voucher.UsedCount++;
+                    }
+                }
+
+                _db.Orders.Add(order);
+                await _db.SaveChangesAsync(); // SAVE ORDER FIRST TO GET ID
+
+                _db.Notifications.Add(new Notification
+                {
+                    UserId = userId,
+                    Message = $"Đặt hàng thành công! Đơn hàng #{order.Id} đang được xử lý.",
+                    CreatedAt = DateTime.UtcNow
                 });
+                await _db.SaveChangesAsync(); // SAVE NOTIFICATION
+
+                var created = await _db.Orders
+                    .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                    .AsNoTracking() // Performance
+                    .FirstAsync(o => o.Id == order.Id);
+
+                return CreatedAtAction(nameof(GetById), new { id = order.Id }, created);
             }
-
-            order.TotalPrice = order.OrderItems.Sum(x => x.Price * x.Quantity);
-
-            _db.Orders.Add(order);
-            await _db.SaveChangesAsync();
-
-            // Re-load with includes to return full data
-            var created = await _db.Orders
-                .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product)
-                .FirstAsync(o => o.Id == order.Id);
-
-            return CreatedAtAction(nameof(GetById), new { id = order.Id }, created);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Order Creation Failed: {ex.Message}");
+                return StatusCode(500, new { message = "Lỗi hệ thống khi tạo đơn hàng.", detail = ex.Message });
+            }
         }
 
         [HttpPut("{id:int}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateOrderDto dto)
         {
             var order = await _db.Orders.FindAsync(id);
             if (order == null) return NotFound();
 
             order.Status = dto.Status;
+            
+            if (dto.Status == "Confirmed") order.ConfirmedAt = DateTime.UtcNow;
+            else if (dto.Status == "Shipping") order.ShippingAt = DateTime.UtcNow;
+            else if (dto.Status == "Delivered") order.DeliveredAt = DateTime.UtcNow;
+            else if (dto.Status == "Cancelled") order.CancelledAt = DateTime.UtcNow;
+            else if (dto.Status == "ProcessingOrder") order.Status = "Đang xử lý order";
+
+            // Create notification for status update
+            _db.Notifications.Add(new Notification
+            {
+                UserId = order.UserId,
+                Message = $"Đơn hàng #{order.Id} đã chuyển sang trạng thái: {dto.Status}",
+                CreatedAt = DateTime.UtcNow
+            });
+
             await _db.SaveChangesAsync();
+
+            // Push real-time update via SignalR
+            await _orderHub.Clients.Group($"User_{order.UserId}")
+                .SendAsync("UpdateOrderStatus", new { OrderId = order.Id, Status = dto.Status });
+
+            return NoContent();
+        }
+
+        [HttpPut("{id:int}/confirm-payment")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
+        public async Task<IActionResult> ConfirmPayment(int id)
+        {
+            var order = await _db.Orders.FindAsync(id);
+            if (order == null) return NotFound();
+
+            if (order.Status != "Chờ thanh toán")
+                return BadRequest(new { message = "Chỉ có thể xác nhận thanh toán cho đơn hàng đang chờ thanh toán." });
+
+            order.Status = "Đã thanh toán";
+            
+            // Create notification for status update
+            _db.Notifications.Add(new Notification
+            {
+                UserId = order.UserId,
+                Message = $"Đơn hàng #{order.Id} đã được xác nhận thanh toán",
+                CreatedAt = DateTime.UtcNow
+            });
+
+            await _db.SaveChangesAsync();
+
+            // Push real-time update via SignalR
+            await _orderHub.Clients.Group($"User_{order.UserId}")
+                .SendAsync("UpdateOrderStatus", new { OrderId = order.Id, Status = order.Status });
+
             return NoContent();
         }
 

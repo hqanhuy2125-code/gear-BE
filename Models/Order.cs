@@ -28,6 +28,10 @@ namespace GamingGearBackend.Models
         public string PaymentMethod { get; set; } = "COD";
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? ConfirmedAt { get; set; }
+        public DateTime? ShippingAt { get; set; }
+        public DateTime? DeliveredAt { get; set; }
+        public DateTime? CancelledAt { get; set; }
 
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
