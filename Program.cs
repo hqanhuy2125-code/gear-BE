@@ -90,6 +90,8 @@ builder.Services.AddAuthorization(options => {
     policy.RequireRole("owner"));
   options.AddPolicy("AdminOrOwner", policy => 
     policy.RequireRole("admin", "owner"));
+  options.AddPolicy("CustomerOnly", policy => 
+    policy.RequireRole("customer"));
   options.AddPolicy("AllUsers", policy => 
     policy.RequireAuthenticatedUser());
 });
@@ -145,15 +147,29 @@ using (var scope = app.Services.CreateScope())
             CreatedAt = DateTime.UtcNow
         });
     }
+
+    // Seed default customer user
+    if (!dbContext.Users.Any(u => u.Email == "customer@gear.com"))
+    {
+        dbContext.Users.Add(new User
+        {
+            Name = "Default Customer",
+            Email = "customer@gear.com",
+            Password = BCrypt.Net.BCrypt.HashPassword("customer123"),
+            Role = "customer",
+            CreatedAt = DateTime.UtcNow
+        });
+    }
     dbContext.SaveChanges();
 
     // Seed sample orders for testing lifecycle
     if (!dbContext.Orders.Any(o => o.FullName == "Huy Test Order"))
     {
-        var testUser = dbContext.Users.FirstOrDefault(u => u.Email == "hqanhuy@gear.com");
+        var testUser = dbContext.Users.FirstOrDefault(u => u.Email == "customer@gear.com");
         if (testUser != null)
         {
             var userId = testUser.Id;
+            // ... (rest of the order seeding)
 
             // 1. Pending Order
             var order1 = new Order

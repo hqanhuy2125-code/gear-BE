@@ -11,7 +11,7 @@ namespace GamingGearBackend.Controllers
 {
     [ApiController]
     [Route("api/orders")]
-    [Microsoft.AspNetCore.Authorization.Authorize] // Allow all authenticated roles
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly AppDbContext _db;
@@ -37,6 +37,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpGet("user/{userId:int}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "CustomerOnly")]
         public async Task<ActionResult<IEnumerable<Order>>> GetByUser(int userId)
         {
             var orders = await _db.Orders
@@ -62,6 +63,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpPost]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "CustomerOnly")]
         public async Task<ActionResult<Order>> Create([FromBody] CreateOrderDto dto)
         {
             try 
@@ -253,6 +255,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<IActionResult> Delete(int id)
         {
             var order = await _db.Orders.FindAsync(id);

@@ -9,7 +9,7 @@ namespace GamingGearBackend.Controllers
 {
     [ApiController]
     [Route("api/wishlist")]
-    [Authorize]
+    [Authorize(Policy = "CustomerOnly")]
     public class WishlistController : ControllerBase
     {
         private readonly AppDbContext _db;

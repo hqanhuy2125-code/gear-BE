@@ -26,6 +26,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpPost("create-url")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "CustomerOnly")]
         public IActionResult CreateUrl([FromBody] CreateVnPayUrlDto dto)
         {
             var url = _vnPayService.CreatePaymentUrl(dto.OrderId, dto.Amount, HttpContext);

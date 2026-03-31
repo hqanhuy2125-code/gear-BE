@@ -7,7 +7,7 @@ namespace GamingGearBackend.Controllers
 {
     [ApiController]
     [Route("api/cartitems")]
-    [Microsoft.AspNetCore.Authorization.Authorize] // Allow all authenticated roles
+    [Microsoft.AspNetCore.Authorization.Authorize(Policy = "CustomerOnly")]
     public class CartItemsController : ControllerBase
     {
         private readonly AppDbContext _db;

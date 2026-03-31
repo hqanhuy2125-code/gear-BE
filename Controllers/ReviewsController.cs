@@ -72,6 +72,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpPost]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "CustomerOnly")]
         public async Task<IActionResult> CreateReview([FromBody] CreateReviewDto dto)
         {
             // Kiểm tra user có mua sản phẩm chưa
@@ -107,6 +108,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<IActionResult> DeleteReview(int id)
         {
             var review = await _db.Reviews.FindAsync(id);
