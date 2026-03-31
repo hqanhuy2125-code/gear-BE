@@ -75,6 +75,11 @@ namespace GamingGearBackend.Controllers
         [Microsoft.AspNetCore.Authorization.Authorize(Policy = "CustomerOnly")]
         public async Task<IActionResult> CreateReview([FromBody] CreateReviewDto dto)
         {
+            var user = await _db.Users.FindAsync(dto.UserId);
+            if (user == null || user.Role != "customer")
+            {
+                return StatusCode(403, new { message = "Admin và Owner không có quyền đánh giá sản phẩm." });
+            }
             // Kiểm tra user có mua sản phẩm chưa
             var hasPurchased = await _db.OrderItems
                 .Include(oi => oi.Order)

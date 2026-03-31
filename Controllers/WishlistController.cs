@@ -35,9 +35,13 @@ namespace GamingGearBackend.Controllers
         [HttpPost("toggle")]
         public async Task<IActionResult> ToggleWishlist([FromBody] WishlistToggleDto dto)
         {
-            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
             var userId = int.Parse(userIdStr);
+
+            var user = await _db.Users.FindAsync(userId);
+            if (user == null || user.Role != "customer")
+            {
+                return StatusCode(403, new { message = "Admin và Owner không có quyền sử dụng Wishlist." });
+            }
             
             var existing = await _db.WishlistItems
                 .FirstOrDefaultAsync(w => w.UserId == userId && w.ProductId == dto.ProductId);
@@ -65,9 +69,13 @@ namespace GamingGearBackend.Controllers
         [HttpPost("{productId:int}")]
         public async Task<IActionResult> AddToWishlist(int productId)
         {
-            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
             var userId = int.Parse(userIdStr);
+
+            var user = await _db.Users.FindAsync(userId);
+            if (user == null || user.Role != "customer")
+            {
+                return StatusCode(403, new { message = "Admin và Owner không có quyền sử dụng Wishlist." });
+            }
             
             var existing = await _db.WishlistItems
                 .FirstOrDefaultAsync(w => w.UserId == userId && w.ProductId == productId);

@@ -43,9 +43,12 @@ namespace GamingGearBackend.Controllers
         {
             item.Id = 0;
 
-            var firstUser = await _db.Users.OrderBy(u => u.Id).FirstOrDefaultAsync();
-            if (firstUser == null) return BadRequest(new { message = "No users in database." });
-            item.UserId = firstUser.Id;
+            var user = await _db.Users.FindAsync(int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0"));
+            if (user == null || user.Role != "customer")
+            {
+                return StatusCode(403, new { message = "Admin và Owner không có quyền mua hàng / thêm vào giỏ." });
+            }
+            item.UserId = user.Id;
 
             var firstProduct = await _db.Products.OrderBy(p => p.Id).FirstOrDefaultAsync();
             if (firstProduct == null) return BadRequest(new { message = "No products in database." });

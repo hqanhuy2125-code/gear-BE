@@ -72,9 +72,14 @@ namespace GamingGearBackend.Controllers
                 if (string.IsNullOrEmpty(userIdStr)) return Unauthorized(new { message = "User not authenticated." });
                 var userId = int.Parse(userIdStr);
 
-                // Validate user exists
+                // Validate user exists & Check role manually
                 var user = await _db.Users.FindAsync(userId);
                 if (user == null) return BadRequest(new { message = "User not found." });
+                
+                if (user.Role != "customer")
+                {
+                    return StatusCode(403, new { message = "Chỉ tài khoản Customer mới được phép đặt hàng. Admin và Owner không có quyền này." });
+                }
 
                 if (dto.Items == null || dto.Items.Count == 0)
                     return BadRequest(new { message = "Order must have at least one item." });
