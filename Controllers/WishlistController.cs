@@ -22,9 +22,19 @@ namespace GamingGearBackend.Controllers
         [HttpGet("{userId:int}")]
         public async Task<IActionResult> GetWishlist(int userId)
         {
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+            var currentUserId = int.Parse(userIdStr);
+
+            // For security, ensure the requested userId matches the current user from token
+            if (userId != currentUserId)
+            {
+                return Forbid();
+            }
+
             var wishlist = await _db.WishlistItems
                 .Include(w => w.Product)
-                .Where(w => w.UserId == userId)
+                .Where(w => w.UserId == currentUserId)
                 .OrderByDescending(w => w.CreatedAt)
                 .Select(w => w.Product)
                 .ToListAsync();
@@ -35,6 +45,8 @@ namespace GamingGearBackend.Controllers
         [HttpPost("toggle")]
         public async Task<IActionResult> ToggleWishlist([FromBody] WishlistToggleDto dto)
         {
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
             var userId = int.Parse(userIdStr);
 
             var user = await _db.Users.FindAsync(userId);
@@ -69,6 +81,8 @@ namespace GamingGearBackend.Controllers
         [HttpPost("{productId:int}")]
         public async Task<IActionResult> AddToWishlist(int productId)
         {
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
             var userId = int.Parse(userIdStr);
 
             var user = await _db.Users.FindAsync(userId);
