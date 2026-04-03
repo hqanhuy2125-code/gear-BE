@@ -24,15 +24,24 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpGet]
-        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<ActionResult<IEnumerable<Order>>> GetAll()
         {
-            var orders = await _db.Orders
-                .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product)
-                .OrderByDescending(o => o.Id)
-                .ToListAsync();
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            IQueryable<Order> query = _db.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product);
+
+            // Nếu không phải admin hoặc owner, chỉ trả về đơn hàng của chính họ
+            if (role != "admin" && role != "owner")
+            {
+                if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+                var userId = int.Parse(userIdStr);
+                query = query.Where(o => o.UserId == userId);
+            }
+
+            var orders = await query.OrderByDescending(o => o.Id).ToListAsync();
             return Ok(orders);
         }
 

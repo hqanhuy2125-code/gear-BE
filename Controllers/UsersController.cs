@@ -3,12 +3,13 @@ using GamingGearBackend.DTOs;
 using GamingGearBackend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace GamingGearBackend.Controllers
 {
     [ApiController]
     [Route("api/users")]
-    [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public class UsersController : ControllerBase
     {
         private readonly AppDbContext _db;
@@ -19,6 +20,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpGet]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetAll()
         {
             var users = await _db.Users
@@ -36,7 +38,27 @@ namespace GamingGearBackend.Controllers
             return Ok(users);
         }
 
+        [HttpGet("profile")]
+        public async Task<ActionResult<UserResponseDto>> GetProfile()
+        {
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+
+            var u = await _db.Users.FindAsync(int.Parse(userIdStr));
+            if (u == null) return NotFound();
+
+            return Ok(new UserResponseDto
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Email = u.Email,
+                Role = u.Role,
+                CreatedAt = u.CreatedAt
+            });
+        }
+
         [HttpGet("{id:int}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<ActionResult<UserResponseDto>> GetById(int id)
         {
             var u = await _db.Users.FindAsync(id);
@@ -53,6 +75,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpPost]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<ActionResult<UserResponseDto>> Create([FromBody] CreateUserDto dto)
         {
             if (await _db.Users.AnyAsync(x => x.Email == dto.Email))
@@ -83,6 +106,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateUserDto dto)
         {
             var user = await _db.Users.FindAsync(id);
@@ -96,6 +120,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _db.Users.FindAsync(id);
@@ -107,6 +132,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpPut("{id:int}/block")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<IActionResult> Block(int id)
         {
             var user = await _db.Users.FindAsync(id);
@@ -121,6 +147,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpPut("{id:int}/unblock")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<IActionResult> Unblock(int id)
         {
             var user = await _db.Users.FindAsync(id);
