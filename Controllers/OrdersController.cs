@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using GamingGearBackend.Hubs;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GamingGearBackend.Controllers
 {
     [ApiController]
     [Route("api/orders")]
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly AppDbContext _db;
@@ -24,6 +25,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AllUsers")]
         public async Task<ActionResult<IEnumerable<Order>>> GetAll()
         {
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
