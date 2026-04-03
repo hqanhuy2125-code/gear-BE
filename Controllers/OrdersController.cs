@@ -74,7 +74,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpPost]
-        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "CustomerOnly")]
+        [Authorize(Policy = "AllUsers")]
         public async Task<ActionResult<Order>> Create([FromBody] CreateOrderDto dto)
         {
             try 
