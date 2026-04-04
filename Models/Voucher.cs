@@ -17,6 +17,8 @@ namespace GamingGearBackend.Models
         [Required]
         public decimal Value { get; set; }
 
+        public decimal MinOrderValue { get; set; } = 0;
+
         public DateTime ExpiryDate { get; set; }
 
         public int MaxUsages { get; set; }

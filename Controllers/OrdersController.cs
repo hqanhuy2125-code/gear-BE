@@ -109,9 +109,15 @@ namespace GamingGearBackend.Controllers
                     else if (pm.Contains("momo") || pm.Contains("vnpay")) initialStatus = "Đã thanh toán";
                 }
 
+                // Generate Unique OrderCode
+                var random = new Random();
+                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                string orderCodeStr = "ORD-" + new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray());
+
                 var order = new Order
                 {
                     UserId = userId,
+                    OrderCode = orderCodeStr,
                     Status = initialStatus,
                     FullName = dto.FullName,
                     PhoneNumber = dto.PhoneNumber,
@@ -124,20 +130,7 @@ namespace GamingGearBackend.Controllers
                 {
                     if (!products.TryGetValue(item.ProductId, out var product))
                     {
-                        product = new Product
-                        {
-                            Name = string.IsNullOrWhiteSpace(item.ProductName) ? "Unknown Product" : item.ProductName,
-                            Price = item.Price > 0 ? item.Price : 500000,
-                            ImageUrl = item.ImageUrl ?? "",
-                            Description = "Auto-created",
-                            Category = "Uncategorized",
-                            Stock = 100,
-                            CreatedAt = DateTime.UtcNow
-                        };
-                        _db.Products.Add(product);
-                        // Save here to get ID for next items if shared (though usually products are distinct in DTO)
-                        await _db.SaveChangesAsync();
-                        products[product.Id] = product;
+                        return BadRequest(new { message = $"Sản phẩm không có trong hệ thống (ID: {item.ProductId}). Vui lòng tải lại giỏ hàng." });
                     }
 
                     if (!product.IsPreOrder && !product.IsOrderOnly)
@@ -170,18 +163,22 @@ namespace GamingGearBackend.Controllers
                     var voucher = await _db.Vouchers.FirstOrDefaultAsync(v => v.Code == dto.VoucherCode);
                     if (voucher != null && voucher.ExpiryDate > DateTime.UtcNow && (voucher.MaxUsages == 0 || voucher.UsedCount < voucher.MaxUsages))
                     {
-                        if (voucher.Type == "percent")
+                        if (voucher.MinOrderValue == 0 || order.TotalPrice >= voucher.MinOrderValue)
                         {
-                            order.TotalPrice -= order.TotalPrice * (voucher.Value / 100m);
+                            if (voucher.Type == "percent")
+                            {
+                                order.TotalPrice -= order.TotalPrice * (voucher.Value / 100m);
+                            }
+                            else
+                            {
+                                order.TotalPrice -= voucher.Value;
+                            }
+                            if (order.TotalPrice < 0) order.TotalPrice = 0;
+                            voucher.UsedCount++;
                         }
-                        else
-                        {
-                            order.TotalPrice -= voucher.Value;
-                        }
-                        if (order.TotalPrice < 0) order.TotalPrice = 0;
-                        voucher.UsedCount++;
                     }
                 }
+
 
                 _db.Orders.Add(order);
                 await _db.SaveChangesAsync(); // SAVE ORDER FIRST TO GET ID

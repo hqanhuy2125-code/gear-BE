@@ -1,0 +1,174 @@
+﻿Using project 'D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\GamingGearBackend.csproj'.
+Using startup project 'D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\GamingGearBackend.csproj'.
+dotnet msbuild /getProperty:ProjectName /getProperty:AssemblyName /getProperty:DesignAssembly /getProperty:Language /getProperty:OutputPath /getProperty:PlatformTarget /getProperty:ProjectAssetsFile /getProperty:ProjectDir /getProperty:RootNamespace /getProperty:RuntimeFrameworkVersion /getProperty:TargetFileName /getProperty:TargetFrameworkMoniker /getProperty:Nullable /getProperty:TargetFramework /getProperty:TargetPlatformIdentifier /getProperty:Platform /t:ResolvePackageAssets /getItem:RuntimeCopyLocalItems "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\GamingGearBackend.csproj"
+dotnet msbuild /getProperty:ProjectName /getProperty:AssemblyName /getProperty:DesignAssembly /getProperty:Language /getProperty:OutputPath /getProperty:PlatformTarget /getProperty:ProjectAssetsFile /getProperty:ProjectDir /getProperty:RootNamespace /getProperty:RuntimeFrameworkVersion /getProperty:TargetFileName /getProperty:TargetFrameworkMoniker /getProperty:Nullable /getProperty:TargetFramework /getProperty:TargetPlatformIdentifier /getProperty:Platform /t:ResolvePackageAssets /getItem:RuntimeCopyLocalItems "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\GamingGearBackend.csproj"
+Build started...
+dotnet build "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\GamingGearBackend.csproj" /verbosity:quiet /nologo /p:PublishAot=false
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.11
+
+Build succeeded.
+dotnet exec --depsfile "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\bin\Debug\net10.0\GamingGearBackend.deps.json" --additionalprobingpath "C:\Users\hĂ  quang huy\.nuget\packages" --additionalprobingpath "C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages" --runtimeconfig "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\bin\Debug\net10.0\GamingGearBackend.runtimeconfig.json" "C:\Users\hĂ  quang huy\.dotnet\tools\.store\dotnet-ef\10.0.5\dotnet-ef\10.0.5\tools\net8.0\any\tools\net8.0\any\ef.dll" database update --assembly "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\bin\Debug\net10.0\GamingGearBackend.dll" --project "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\GamingGearBackend.csproj" --startup-assembly "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\bin\Debug\net10.0\GamingGearBackend.dll" --startup-project "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\GamingGearBackend.csproj" --project-dir "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\\" --root-namespace GamingGearBackend --language C# --framework net10.0 --design-assembly "C:\Users\hĂ  quang huy\.nuget\packages\microsoft.entityframeworkcore.design\10.0.3\lib\net10.0\Microsoft.EntityFrameworkCore.Design.dll" --nullable --working-dir "D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend" --verbose
+Using assembly 'GamingGearBackend'.
+Using startup assembly 'GamingGearBackend'.
+Using application base 'D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\bin\Debug\net10.0'.
+Using working directory 'D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend'.
+Using root namespace 'GamingGearBackend'.
+Using project directory 'D:\231A290063_HĂ  Quang Huy_GamingGear\GamingGearBackend\'.
+Remaining arguments: .
+Finding DbContext classes...
+Using environment 'Development'.
+Finding IDesignTimeDbContextFactory implementations...
+Finding DbContext classes in the project...
+Found DbContext 'AppDbContext'.
+Finding application service provider in assembly 'GamingGearBackend'...
+Finding Microsoft.Extensions.Hosting service provider...
+Using application service provider from Microsoft.Extensions.Hosting.
+Using context 'AppDbContext'.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'MinOrderValue' on entity type 'Voucher'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'Value' on entity type 'Voucher'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+Finding design-time services referenced by assembly 'GamingGearBackend'...
+Finding design-time services referenced by assembly 'GamingGearBackend'...
+No referenced design-time services were found.
+Finding design-time services for provider 'Microsoft.EntityFrameworkCore.SqlServer'...
+Using design-time services from provider 'Microsoft.EntityFrameworkCore.SqlServer'.
+Finding IDesignTimeServices implementations in assembly 'GamingGearBackend'...
+No design-time services were found.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (9ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+Executed DbCommand (9ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+info: Microsoft.EntityFrameworkCore.Migrations[20411]
+      Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      DECLARE @result int;
+      EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+      SELECT @result
+Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+      BEGIN
+          CREATE TABLE [__EFMigrationsHistory] (
+              [MigrationId] nvarchar(150) NOT NULL,
+              [ProductVersion] nvarchar(32) NOT NULL,
+              CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+          );
+      END;
+Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+info: Microsoft.EntityFrameworkCore.Migrations[20402]
+      Applying migration '20260404123033_AddSepayPaymentTracking'.
+Applying migration '20260404123033_AddSepayPaymentTracking'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE [Orders] ADD [OrderCode] nvarchar(450) NOT NULL DEFAULT N'';
+Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+ALTER TABLE [Orders] ADD [OrderCode] nvarchar(450) NOT NULL DEFAULT N'';
+Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+ALTER TABLE [Orders] ADD [PaidAt] datetime2 NULL;info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE [Orders] ADD [PaidAt] datetime2 NULL;
+
+Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+ALTER TABLE [Orders] ADD [PaymentReference] nvarchar(max) NULL;info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE [Orders] ADD [PaymentReference] nvarchar(max) NULL;
+
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [PaymentLogs] (
+          [Id] int NOT NULL IDENTITY,
+          [OrderId] int NOT NULL,
+          [Amount] decimal(18,2) NOT NULL,
+          [TransactionId] nvarchar(max) NOT NULL,
+          [Gateway] nvarchar(max) NULL,
+          [TransactionDate] datetime2 NULL,
+          [RawData] nvarchar(max) NULL,
+          [CreatedAt] datetime2 NOT NULL,
+          CONSTRAINT [PK_PaymentLogs] PRIMARY KEY ([Id]),
+          CONSTRAINT [FK_PaymentLogs_Orders_OrderId] FOREIGN KEY ([OrderId]) REFERENCES [Orders] ([Id]) ON DELETE CASCADE
+      );
+Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE [PaymentLogs] (
+    [Id] int NOT NULL IDENTITY,
+    [OrderId] int NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [TransactionId] nvarchar(max) NOT NULL,
+    [Gateway] nvarchar(max) NULL,
+    [TransactionDate] datetime2 NULL,
+    [RawData] nvarchar(max) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_PaymentLogs] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_PaymentLogs_Orders_OrderId] FOREIGN KEY ([OrderId]) REFERENCES [Orders] ([Id]) ON DELETE CASCADE
+);
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE UNIQUE INDEX [IX_Orders_OrderCode] ON [Orders] ([OrderCode]);
+Failed executing DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Orders_OrderCode] ON [Orders] ([OrderCode]);
+Microsoft.Data.SqlClient.SqlException (0x80131904): The CREATE UNIQUE INDEX statement terminated because a duplicate key was found for the object name 'dbo.Orders' and the index name 'IX_Orders_OrderCode'. The duplicate key value is ().
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean isAsync, Int32 timeout, Boolean asyncWrite)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.Execute(IReadOnlyList`1 migrationCommands, IRelationalConnection connection, MigrationExecutionState executionState, Boolean beginTransaction, Boolean commitTransaction, Nullable`1 isolationLevel)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.<>c.<ExecuteNonQuery>b__3_1(DbContext _, ValueTuple`6 s)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IReadOnlyList`1 migrationCommands, IRelationalConnection connection, MigrationExecutionState executionState, Boolean commitTransaction, Nullable`1 isolationLevel)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.MigrateImplementation(DbContext context, String targetMigration, MigrationExecutionState state, Boolean useTransaction)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.<>c.<Migrate>b__20_1(DbContext c, ValueTuple`4 s)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.Design.Internal.MigrationsOperations.UpdateDatabase(String targetMigration, String connectionString, String contextType)
+   at Microsoft.EntityFrameworkCore.Design.OperationExecutor.UpdateDatabaseImpl(String targetMigration, String connectionString, String contextType)
+   at Microsoft.EntityFrameworkCore.Design.OperationExecutor.UpdateDatabase.<>c__DisplayClass0_0.<.ctor>b__0()
+   at Microsoft.EntityFrameworkCore.Design.OperationExecutor.OperationBase.Execute(Action action)
+ClientConnectionId:27bd5b4c-b943-42bb-be26-2be529c67335
+Error Number:1505,State:1,Class:16
+The CREATE UNIQUE INDEX statement terminated because a duplicate key was found for the object name 'dbo.Orders' and the index name 'IX_Orders_OrderCode'. The duplicate key value is ().
+The statement has been terminated.

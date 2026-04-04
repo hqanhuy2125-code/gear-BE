@@ -180,6 +180,7 @@ namespace GamingGearBackend.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _db.Products.FindAsync(id);
@@ -188,6 +189,18 @@ namespace GamingGearBackend.Controllers
             _db.Products.Remove(product);
             await _db.SaveChangesAsync();
             return NoContent();
+        }
+
+        [HttpPatch("{id:int}/toggle-visibility")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOrOwner")]
+        public async Task<IActionResult> ToggleVisibility(int id)
+        {
+            var product = await _db.Products.FindAsync(id);
+            if (product == null) return NotFound();
+
+            product.IsHidden = !product.IsHidden;
+            await _db.SaveChangesAsync();
+            return Ok(product);
         }
     }
 }

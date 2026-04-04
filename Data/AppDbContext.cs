@@ -25,6 +25,9 @@ namespace GamingGearBackend.Data
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<OtpCode> OtpCodes { get; set; }
+        public DbSet<FlashSale> FlashSales { get; set; }
+        public DbSet<SystemConfig> SystemConfigs { get; set; }
+        public DbSet<PaymentLog> PaymentLogs { get; set; }
 
         private static readonly DateTime SeedDate = new DateTime(2025, 3, 1, 0, 0, 0, DateTimeKind.Utc);
 
@@ -141,11 +144,24 @@ namespace GamingGearBackend.Data
             modelBuilder.Entity<Product>().HasIndex(p => p.Category);
             modelBuilder.Entity<Order>().HasIndex(o => o.UserId);
             modelBuilder.Entity<Order>().HasIndex(o => o.Status);
+            modelBuilder.Entity<Order>().HasIndex(o => o.OrderCode).IsUnique();
             modelBuilder.Entity<CartItem>().HasIndex(ci => ci.UserId);
             
             // Decimal precision for Promotion
             modelBuilder.Entity<Promotion>().Property(p => p.MinOrderValue).HasPrecision(18, 2);
             modelBuilder.Entity<Promotion>().Property(p => p.MaxDiscount).HasPrecision(18, 2);
+
+            // Decimal precision for FlashSale
+            modelBuilder.Entity<FlashSale>().Property(f => f.DiscountPercent).HasPrecision(5, 2);
+
+            // Seed default SystemConfig
+            modelBuilder.Entity<SystemConfig>().HasData(
+                new SystemConfig { Id = 1, Key = "shipping_fee", Value = "30000", Description = "Phí vận chuyển mặc định (VNĐ)", UpdatedAt = SeedDate },
+                new SystemConfig { Id = 2, Key = "free_shipping_threshold", Value = "500000", Description = "Đơn hàng từ giá trị này được miễn phí ship (VNĐ)", UpdatedAt = SeedDate },
+                new SystemConfig { Id = 3, Key = "return_policy_days", Value = "7", Description = "Số ngày được phép đổi trả hàng", UpdatedAt = SeedDate },
+                new SystemConfig { Id = 4, Key = "return_policy_note", Value = "Sản phẩm cần còn nguyên tem, hộp và chưa qua sử dụng", Description = "Điều kiện đổi trả hàng", UpdatedAt = SeedDate },
+                new SystemConfig { Id = 5, Key = "site_name", Value = "SCYTOL CLX21", Description = "Tên hiển thị của website", UpdatedAt = SeedDate }
+            );
         }
     }
 }

@@ -91,7 +91,7 @@ builder.Services.AddAuthorization(options => {
   options.AddPolicy("AdminOrOwner", policy => 
     policy.RequireRole("admin", "owner"));
   options.AddPolicy("CustomerOnly", policy => 
-    policy.RequireRole("customer"));
+    policy.RequireRole("customer", "user"));
   options.AddPolicy("AllUsers", policy => 
     policy.RequireAuthenticatedUser());
 });
@@ -104,6 +104,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ScheduledJobs>();
 
 // Configure VNPay Services
@@ -119,109 +120,143 @@ var app = builder.Build();
 // Automatically apply pending migrations and create the database if it doesn't exist.
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.Migrate();
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<AppDbContext>();
 
-    // Seed default admin user
-    if (!dbContext.Users.Any(u => u.Email == "hqanhuy@gear.com"))
+    try
     {
-        dbContext.Users.Add(new User
-        {
-            Name = "Huy Admin",
-            Email = "hqanhuy@gear.com",
-            Password = BCrypt.Net.BCrypt.HashPassword("hqanhuy"),
-            Role = "admin",
-            CreatedAt = DateTime.UtcNow
-        });
-    }
+        Console.WriteLine("[SEED] --- Database Startup Sequence Starting ---");
+        
+        // 0. Ensure Migrations
+        dbContext.Database.Migrate();
 
-    // Seed default owner user
-    if (!dbContext.Users.Any(u => u.Email == "owner@gear.com"))
-    {
-        dbContext.Users.Add(new User
+        // 1. Seed Users (Admin & Owner)
+        var usersToSeed = new List<User>
         {
-            Name = "Owner Master",
-            Email = "owner@gear.com",
-            Password = BCrypt.Net.BCrypt.HashPassword("owner123"),
-            Role = "owner",
-            CreatedAt = DateTime.UtcNow
-        });
-    }
+            new User { Name = "Huy Admin", Email = "hqanhuy@gear.com", Password = BCrypt.Net.BCrypt.HashPassword("hqanhuy"), Role = "admin", CreatedAt = DateTime.UtcNow },
+            new User { Name = "Owner Master", Email = "owner@gear.com", Password = BCrypt.Net.BCrypt.HashPassword("hqanhuy"), Role = "owner", CreatedAt = DateTime.UtcNow }
+        };
 
-    // Seed default customer user
-    if (!dbContext.Users.Any(u => u.Email == "customer@gear.com"))
-    {
-        dbContext.Users.Add(new User
+        foreach (var u in usersToSeed)
         {
-            Name = "Default Customer",
-            Email = "customer@gear.com",
-            Password = BCrypt.Net.BCrypt.HashPassword("customer123"),
-            Role = "customer",
-            CreatedAt = DateTime.UtcNow
-        });
-    }
-    dbContext.SaveChanges();
-
-    // Seed sample orders for testing lifecycle
-    if (!dbContext.Orders.Any(o => o.FullName == "Huy Test Order"))
-    {
-        var testUser = dbContext.Users.FirstOrDefault(u => u.Email == "customer@gear.com");
-        if (testUser != null)
-        {
-            var userId = testUser.Id;
-            // ... (rest of the order seeding)
-
-            // 1. Pending Order
-            var order1 = new Order
+            var existing = dbContext.Users.FirstOrDefault(x => x.Email == u.Email);
+            if (existing == null)
             {
-                UserId = userId,
-                FullName = "Huy Test Order",
-                PhoneNumber = "0123456789",
-                ShippingAddress = "123 Main St",
-                TotalPrice = 3500000,
-                Status = "Pending",
-                CreatedAt = DateTime.UtcNow.AddHours(-10)
-            };
-            dbContext.Orders.Add(order1);
-
-            // 2. Confirmed Order
-            var order2 = new Order
+                dbContext.Users.Add(u);
+                Console.WriteLine($"[SEED] User registered: {u.Email} ({u.Role})");
+            }
+            else
             {
-                UserId = userId,
-                FullName = "Huy Test Order",
-                PhoneNumber = "0123456789",
-                ShippingAddress = "123 Main St",
-                TotalPrice = 3200000,
-                Status = "Confirmed",
-                CreatedAt = DateTime.UtcNow.AddHours(-8),
-                ConfirmedAt = DateTime.UtcNow.AddHours(-7)
-            };
-            dbContext.Orders.Add(order2);
+                existing.Password = u.Password; // Always reset password to ensure login works
+                existing.Role = u.Role;
+            }
+        }
+        dbContext.SaveChanges(); // Persist users so orders can link to them
 
-            // 3. Shipping Order
-            var order3 = new Order
+        // 2. Seed Vouchers
+        var vouchersToSeed = new List<Voucher>
+        {
+            new Voucher { Code = "SAVE10", Type = "percent", Value = 10, MaxUsages = 100, ExpiryDate = new DateTime(2026, 12, 31).ToUniversalTime(), CreatedAt = DateTime.UtcNow },
+            new Voucher { Code = "SAVE20", Type = "percent", Value = 20, MaxUsages = 100, ExpiryDate = new DateTime(2026, 12, 31).ToUniversalTime(), CreatedAt = DateTime.UtcNow },
+            new Voucher { Code = "FREESHIP", Type = "fixed", Value = 30000, MaxUsages = 200, ExpiryDate = new DateTime(2026, 12, 31).ToUniversalTime(), CreatedAt = DateTime.UtcNow },
+            new Voucher { Code = "NEWUSER", Type = "percent", Value = 15, MaxUsages = 500, ExpiryDate = new DateTime(2026, 12, 31).ToUniversalTime(), CreatedAt = DateTime.UtcNow },
+            new Voucher { Code = "VIP50", Type = "percent", Value = 50, MaxUsages = 50, ExpiryDate = new DateTime(2026, 12, 31).ToUniversalTime(), CreatedAt = DateTime.UtcNow },
+            new Voucher { Code = "CODE10", Type = "percent", Value = 10, MaxUsages = 100, ExpiryDate = DateTime.UtcNow.AddMonths(1).ToUniversalTime(), CreatedAt = DateTime.UtcNow },
+            new Voucher { Code = "CODE50", Type = "fixed", Value = 50000, MinOrderValue = 500000, MaxUsages = 50, ExpiryDate = DateTime.UtcNow.AddMonths(1).ToUniversalTime(), CreatedAt = DateTime.UtcNow }
+        };
+
+        foreach (var v in vouchersToSeed)
+        {
+            if (!dbContext.Vouchers.Any(x => x.Code == v.Code))
             {
-                UserId = userId,
-                FullName = "Huy Test Order",
-                PhoneNumber = "0123456789",
-                ShippingAddress = "123 Main St",
-                TotalPrice = 4500000,
-                Status = "Shipping",
-                CreatedAt = DateTime.UtcNow.AddHours(-6),
-                ConfirmedAt = DateTime.UtcNow.AddHours(-5),
-                ShippingAt = DateTime.UtcNow.AddHours(-4)
-            };
-            dbContext.Orders.Add(order3);
+                dbContext.Vouchers.Add(v);
+                Console.WriteLine($"[SEED] Voucher created: {v.Code}");
+            }
+        }
 
+        // 3. Seed Flash Sales
+        var flashSalesToSeed = new List<FlashSale>
+        {
+            new FlashSale
+            {
+                Name = "Black Friday",
+                Description = "Siêu sale lớn nhất năm",
+                DiscountPercent = 35,
+                StartTime = new DateTime(2026, 4, 4, 2, 0, 0).ToUniversalTime(),
+                EndTime = new DateTime(2026, 4, 8, 12, 0, 0).ToUniversalTime(),
+                ProductIds = "1,2",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow
+            },
+            new FlashSale
+            {
+                Name = "Summer Sale",
+                Description = "Chào hè rực rỡ với ưu đãi khủng",
+                DiscountPercent = 20,
+                StartTime = new DateTime(2026, 5, 1, 0, 0, 0).ToUniversalTime(),
+                EndTime = new DateTime(2026, 5, 5, 23, 59, 0).ToUniversalTime(),
+                ProductIds = "3,4",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow
+            }
+        };
+
+        foreach (var fs in flashSalesToSeed)
+        {
+            if (!dbContext.FlashSales.Any(f => f.Name == fs.Name))
+            {
+                dbContext.FlashSales.Add(fs);
+                Console.WriteLine($"[SEED] Flash Sale created: {fs.Name}");
+            }
+        }
+
+        // 4. Seed System Config
+        var configs = new List<SystemConfig>
+        {
+            new SystemConfig { Key = "ShippingFee_Inner", Value = "25000", Description = "Phí ship nội thành" },
+            new SystemConfig { Key = "ShippingFee_Outer", Value = "40000", Description = "Phí ship ngoại tỉnh" }
+        };
+
+        foreach (var config in configs)
+        {
+            if (!dbContext.SystemConfigs.Any(c => c.Key == config.Key))
+            {
+                dbContext.SystemConfigs.Add(config);
+            }
+        }
+
+        dbContext.SaveChanges();
+
+        // 5. Seed Test Orders (Safe check)
+        var testCustomer = dbContext.Users.FirstOrDefault(u => u.Email == "customer@gear.com");
+        if (testCustomer != null && !dbContext.Orders.Any(o => o.FullName == "Huy Test Order"))
+        {
+            var o1 = new Order { UserId = testCustomer.Id, FullName = "Huy Test Order", PhoneNumber = "0123456789", ShippingAddress = "123 Main St", TotalPrice = 3500000, Status = "Pending", OrderCode = "ORD-TEST-001", CreatedAt = DateTime.UtcNow.AddHours(-10) };
+            var o2 = new Order { UserId = testCustomer.Id, FullName = "Huy Test Order", PhoneNumber = "0123456789", ShippingAddress = "123 Main St", TotalPrice = 3200000, Status = "Confirmed", OrderCode = "ORD-TEST-002", CreatedAt = DateTime.UtcNow.AddHours(-8), ConfirmedAt = DateTime.UtcNow.AddHours(-7) };
+            
+            dbContext.Orders.AddRange(o1, o2);
             dbContext.SaveChanges();
 
-            // Add OrderItems
-            dbContext.OrderItems.Add(new OrderItem { OrderId = order1.Id, ProductId = 1, Quantity = 1, Price = 3500000 });
-            dbContext.OrderItems.Add(new OrderItem { OrderId = order2.Id, ProductId = 2, Quantity = 1, Price = 3200000 });
-            dbContext.OrderItems.Add(new OrderItem { OrderId = order3.Id, ProductId = 3, Quantity = 1, Price = 4500000 });
+            if (dbContext.Products.Any(p => p.Id == 1)) dbContext.OrderItems.Add(new OrderItem { OrderId = o1.Id, ProductId = 1, Quantity = 1, Price = 3500000 });
+            if (dbContext.Products.Any(p => p.Id == 2)) dbContext.OrderItems.Add(new OrderItem { OrderId = o2.Id, ProductId = 2, Quantity = 1, Price = 3200000 });
             
             dbContext.SaveChanges();
+            Console.WriteLine("[SEED] Sample orders created successfully.");
         }
+
+        Console.WriteLine("[SEED] --- Database Startup Sequence Finished Successfully ---");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("==================================================================");
+        Console.WriteLine("[FATAL SEED ERROR] The application encountered a database issue during startup.");
+        Console.WriteLine($"Message: {ex.Message}");
+        if (ex.InnerException != null)
+        {
+            Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+        }
+        Console.WriteLine("Seeding was aborted to prevent crash, but the application will continue.");
+        Console.WriteLine("==================================================================");
     }
 }
 
@@ -255,6 +290,52 @@ RecurringJob.AddOrUpdate<ScheduledJobs>(
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// ===== ROLE ROUTE MIDDLEWARE =====
+// Enforce strict route separation per role after JWT is validated
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value?.ToLower() ?? "";
+    var user = context.User;
+
+    if (user.Identity?.IsAuthenticated == true)
+    {
+        var role = user.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "";
+
+        // Admin cannot access /owner/* routes
+        if (path.StartsWith("/owner/") || path == "/owner")
+        {
+            if (role == "admin" || role == "customer")
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsJsonAsync(new 
+                { 
+                    message = $"Role '{role}' không có quyền truy cập vào khu vực Owner.",
+                    redirectTo = role == "admin" ? "/admin/dashboard" : "/"
+                });
+                return;
+            }
+        }
+
+        // Owner cannot access /admin/* routes
+        if (path.StartsWith("/admin/") || path == "/admin")
+        {
+            if (role == "owner" || role == "customer")
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsJsonAsync(new 
+                { 
+                    message = $"Role '{role}' không có quyền truy cập vào khu vực Admin.",
+                    redirectTo = role == "owner" ? "/owner/dashboard" : "/"
+                });
+                return;
+            }
+        }
+    }
+
+    await next();
+});
+// ===================================
 
 app.MapControllers();
 app.MapHub<OrderHub>("/hubs/order");

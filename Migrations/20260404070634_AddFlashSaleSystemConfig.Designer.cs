@@ -4,6 +4,7 @@ using GamingGearBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamingGearBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260404070634_AddFlashSaleSystemConfig")]
+    partial class AddFlashSaleSystemConfig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -276,18 +279,8 @@ namespace GamingGearBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OrderCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("PaidAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentReference")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
@@ -313,9 +306,6 @@ namespace GamingGearBackend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderCode")
-                        .IsUnique();
 
                     b.HasIndex("Status");
 
@@ -383,43 +373,6 @@ namespace GamingGearBackend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OtpCodes");
-                });
-
-            modelBuilder.Entity("GamingGearBackend.Models.PaymentLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Gateway")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RawData")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("TransactionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TransactionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("PaymentLogs");
                 });
 
             modelBuilder.Entity("GamingGearBackend.Models.Product", b =>
@@ -780,9 +733,6 @@ namespace GamingGearBackend.Migrations
                     b.Property<int>("MaxUsages")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("MinOrderValue")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -899,17 +849,6 @@ namespace GamingGearBackend.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("GamingGearBackend.Models.PaymentLog", b =>
-                {
-                    b.HasOne("GamingGearBackend.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("GamingGearBackend.Models.Review", b =>

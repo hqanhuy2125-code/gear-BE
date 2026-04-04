@@ -67,7 +67,16 @@ namespace GamingGearBackend.Services
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             
-            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+            if (user == null)
+            {
+                Console.WriteLine($"[AUTH-DEBUG] User not found: {dto.Email}");
+                throw new Exception("Email hoặc mật khẩu không chính xác.");
+            }
+
+            bool isPasswordCorrect = BCrypt.Net.BCrypt.Verify(dto.Password, user.Password);
+            Console.WriteLine($"[AUTH-DEBUG] Login attempt for {dto.Email}: Success? {isPasswordCorrect}");
+            
+            if (!isPasswordCorrect)
             {
                 throw new Exception("Email hoặc mật khẩu không chính xác.");
             }
@@ -107,14 +116,16 @@ namespace GamingGearBackend.Services
                 throw new Exception("Xác thực token Google thất bại: " + ex.Message);
             }
 
-            // Generate and send OTP
-            await SendOtpAsync(payload.Email);
+            var email = payload.Email.Trim().ToLower();
+
+            // Gửi OTP qua Gmail
+            await SendOtpAsync(email);
 
             return new GoogleLoginResponseDto
             {
-                Email = payload.Email,
+                Email = email,
                 Name = payload.Name,
-                Message = "Mã OTP đã được gửi"
+                Message = "Mã OTP đã được gửi đến Gmail của bạn."
             };
         }
 
@@ -291,6 +302,12 @@ namespace GamingGearBackend.Services
             otpRecord.IsUsed = true;
             
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == cleanEmail);
+            
+            // Logic phân quyền chuẩn khi verify OTP thành công
+            string targetRole = "customer";
+            if (cleanEmail == "hqanhuy@gear.com") targetRole = "admin";
+            else if (cleanEmail == "owner@gear.com") targetRole = "owner";
+
             if (user == null)
             {
                 user = new User
@@ -298,11 +315,29 @@ namespace GamingGearBackend.Services
                     Name = string.IsNullOrWhiteSpace(name) ? cleanEmail.Split('@')[0] : name.Trim(),
                     Email = cleanEmail,
                     Password = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString()), 
-                    Role = "customer",
+                    Role = targetRole,
                     CreatedAt = DateTime.UtcNow
                 };
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
+            }
+            else
+            {
+                // Chỉ ưu tiên ghi đè gán quyền admin/owner danh sách cứng, còn lại không đè
+                if (cleanEmail == "hqanhuy@gear.com" || cleanEmail == "owner@gear.com")
+                {
+                    if (user.Role != targetRole) 
+                    {
+                        user.Role = targetRole;
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                else if (string.IsNullOrWhiteSpace(user.Role) || user.Role == "user")
+                {
+                    // Fallback fix cho database cũ
+                    user.Role = "customer";
+                    await _context.SaveChangesAsync();
+                }
             }
 
             if (user.Role == "admin_blocked")

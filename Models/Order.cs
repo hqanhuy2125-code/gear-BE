@@ -17,6 +17,9 @@ namespace GamingGearBackend.Models
         public User? User { get; set; }
         
         [Required]
+        public string OrderCode { get; set; } = string.Empty;
+        
+        [Required]
         public decimal TotalPrice { get; set; }
         
         [Required]
@@ -29,6 +32,8 @@ namespace GamingGearBackend.Models
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? ConfirmedAt { get; set; }
+        public DateTime? PaidAt { get; set; }
+        public string? PaymentReference { get; set; }
         public DateTime? ShippingAt { get; set; }
         public DateTime? DeliveredAt { get; set; }
         public DateTime? CancelledAt { get; set; }

@@ -1,93 +1,98 @@
-using Microsoft.AspNetCore.Mvc;
-using GamingGearBackend.Services;
-using GamingGearBackend.Data;
+using System;
+using System.IO;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using GamingGearBackend.DTOs;
+using GamingGearBackend.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace GamingGearBackend.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class PaymentController : ControllerBase
     {
-        private readonly IVnPayService _vnPayService;
-        private readonly AppDbContext _context;
+        private readonly IOrderService _orderService;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<PaymentController> _logger;
 
-        public PaymentController(IVnPayService vnPayService, AppDbContext context)
+        public PaymentController(
+            IOrderService orderService,
+            IConfiguration configuration,
+            ILogger<PaymentController> logger)
         {
-            _vnPayService = vnPayService;
-            _context = context;
+            _orderService = orderService;
+            _configuration = configuration;
+            _logger = logger;
         }
 
-        public class CreateVnPayUrlDto
+        [HttpPost("sepay-webhook")]
+        public async Task<IActionResult> SepayWebhook([FromBody] SepayWebhookPayload payload)
         {
-            public int OrderId { get; set; }
-            public decimal Amount { get; set; }
-        }
+            try
+            {
+                // Authentication removed per request to ensure webhook processing (SePay verification).
+                // We will rely on unique OrderCodes and TransferAmounts for validation in OrderService.
 
-        [HttpPost("create-url")]
-        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "CustomerOnly")]
-        public IActionResult CreateUrl([FromBody] CreateVnPayUrlDto dto)
-        {
-            var url = _vnPayService.CreatePaymentUrl(dto.OrderId, dto.Amount, HttpContext);
-            return Ok(new { url });
-        }
+                // Only process "in" transfers
+                if (payload.TransferType?.ToLower() != "in")
+                {
+                    return Ok(new { success = true, message = "Skipped non-in transfer" });
+                }
 
-        [HttpGet("vnpay-return")]
-        public async Task<IActionResult> VnPayReturn()
-        {
-            if (Request.Query.Count == 0)
-            {
-                return BadRequest(new { success = false, message = "Không tìm thấy query string" });
-            }
+                // Parse OrderCode from "code" field or "content"
+                var orderCode = payload.Code;
+                
+                // If SePay didn't auto-parse "code" (e.g. because of SCYTOL prefix), 
+                // we extract it manually from "content" using Regex.
+                if (string.IsNullOrEmpty(orderCode) && !string.IsNullOrEmpty(payload.Content))
+                {
+                    // Pattern: ORD followed by optional hyphen and then 8-11 alphanumeric characters
+                    // This handles both "ORD-XXXXXXXX" and "ORDXXXXXXXX"
+                    var match = System.Text.RegularExpressions.Regex.Match(payload.Content, @"ORD-?[A-Z0-9]+", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    if (match.Success)
+                    {
+                        orderCode = match.Value.ToUpper();
+                        
+                        // Normalize: If we got "ORDXXXXXXXX" (11 chars), convert to "ORD-XXXXXXXX"
+                        if (orderCode.Length == 11 && !orderCode.Contains("-"))
+                        {
+                            orderCode = "ORD-" + orderCode.Substring(3);
+                        }
+                        
+                        _logger.LogInformation($"Extracted and normalized OrderCode '{orderCode}' from transaction content.");
+                    }
+                }
 
-            var isValidSignature = _vnPayService.ValidateSignature(Request.Query);
-            if (!isValidSignature)
-            {
-                return BadRequest(new { success = false, message = "Chữ ký không hợp lệ" });
-            }
+                if (string.IsNullOrEmpty(orderCode))
+                {
+                    _logger.LogWarning("SePay Webhook: Missing OrderCode in payload.");
+                    return BadRequest("Missing OrderCode");
+                }
 
-            string responseCode = Request.Query["vnp_ResponseCode"];
-            string txnRef = Request.Query["vnp_TxnRef"];
-            
-            // Extract OrderId from vnp_TxnRef (format:OrderId_Ticks)
-            if (string.IsNullOrEmpty(txnRef) || !txnRef.Contains("_"))
-            {
-                return BadRequest(new { success = false, message = "Dữ liệu giao dịch không hợp lệ" });
-            }
-            
-            var orderIdStr = txnRef.Split('_')[0];
-            if (!int.TryParse(orderIdStr, out var orderId))
-            {
-                return BadRequest(new { success = false, message = "Mã đơn hàng không hợp lệ" });
-            }
+                var rawData = JsonSerializer.Serialize(payload);
+                var success = await _orderService.ConfirmPaymentAsync(
+                    orderCode,
+                    payload.TransferAmount,
+                    payload.ReferenceCode ?? payload.Id.ToString(),
+                    payload.Gateway,
+                    rawData
+                );
 
-            var order = await _context.Orders.FindAsync(orderId);
-            if (order == null)
-            {
-                return NotFound(new { success = false, message = "Không tìm thấy đơn hàng" });
-            }
+                if (success)
+                {
+                    return Ok(new { success = true, message = "Payment confirmed" });
+                }
 
-            if (responseCode == "00")
-            {
-                // Payment Success
-                order.Status = "Completed"; 
-                // Or you can create a new Status like "Paid" if you prefer. 
-                // "Completed" might typically mean Delivered, but let's just use "Pending" with a note? 
-                // Wait, if it's paid but not delivered it should be "Pending" or a new "Paid" status.
-                // The prompt just said "cập nhật trạng thái đơn hàng".
-                // I'll update it to "Paid", but my frontend only handles Pending, Shipping, Delivered, Cancelled.
-                // Ah, let's keep the status "Pending" and set a PaymentStatus, or just set to "Completed".
-                // Actually, I'll set to "Pending" since it hasn't shipped yet! Wait, I'll add "Paid" to frontend eventually or just leave it. 
-                // Actually the prompt: "Hoàn thành (xanh lá)". Let's just set it to "Completed" to show it works.
-                order.Status = "Completed";
-                await _context.SaveChangesAsync();
-                return Ok(new { success = true, orderId = order.Id });
+                return BadRequest("Order not found or amount mismatch");
             }
-            else
+            catch (Exception ex)
             {
-                // Payment Failed
-                return BadRequest(new { success = false, message = $"Giao dịch thất bại với mã lỗi: {responseCode}" });
+                _logger.LogError(ex, "Error processing SePay Webhook");
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }

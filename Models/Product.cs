@@ -28,6 +28,7 @@ namespace GamingGearBackend.Models
         public bool IsPreOrder { get; set; } = false;
         public DateTime? PreOrderDate { get; set; }
         public bool IsOrderOnly { get; set; } = false;
+        public bool IsHidden { get; set; } = false;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

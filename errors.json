@@ -1,0 +1,1502 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "5.0.0.0",
+        "fileVersion": "5.0.0-2.26075.103 (c2435c3e)",
+        "semanticVersion": "5.0.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "CS8767",
+          "level": "warning",
+          "message": "Nullability of reference types in type of parameter 'x' of 'int VnPayCompare.Compare(string x, string y)' doesn't match implicitly implemented member 'int IComparer<string>.Compare(string? x, string? y)' (possibly because of nullability attributes).",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/VnPayLibrary.cs",
+                "region": {
+                  "startLine": 127,
+                  "startColumn": 20,
+                  "endLine": 127,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8767",
+          "level": "warning",
+          "message": "Nullability of reference types in type of parameter 'y' of 'int VnPayCompare.Compare(string x, string y)' doesn't match implicitly implemented member 'int IComparer<string>.Compare(string? x, string? y)' (possibly because of nullability attributes).",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/VnPayLibrary.cs",
+                "region": {
+                  "startLine": 127,
+                  "startColumn": 20,
+                  "endLine": 127,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Users' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 28,
+                  "endLine": 13,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Products' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 31,
+                  "endLine": 14,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'CartItems' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 32,
+                  "endLine": 15,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Orders' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 29,
+                  "endLine": 16,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'OrderItems' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 33,
+                  "endLine": 17,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Blogs' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 28,
+                  "endLine": 18,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Drivers' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 30,
+                  "endLine": 19,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Reviews' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 30,
+                  "endLine": 20,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Vouchers' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 31,
+                  "endLine": 21,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Notifications' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 36,
+                  "endLine": 22,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'WishlistItems' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 36,
+                  "endLine": 23,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'ChatMessages' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 35,
+                  "endLine": 24,
+                  "endColumn": 47
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Promotions' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 33,
+                  "endLine": 25,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'RefreshTokens' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 36,
+                  "endLine": 26,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'OtpCodes' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 31,
+                  "endLine": 27,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'FlashSales' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 33,
+                  "endLine": 28,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'SystemConfigs' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 36,
+                  "endLine": 29,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'PaymentLogs' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 16,
+                  "endLine": 9,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Data/AppDbContext.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 34,
+                  "endLine": 30,
+                  "endColumn": 45
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'value' in 'void VnPayLibrary.AddResponseData(string key, string value)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/VnPayService.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 48,
+                  "endLine": 46,
+                  "endColumn": 58
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'address' in 'MailboxAddress.MailboxAddress(string? name, string address)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/EmailService.cs",
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 69,
+                  "endLine": 28,
+                  "endColumn": 80
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Controllers/ReviewsController.cs",
+                "region": {
+                  "startLine": 56,
+                  "startColumn": 32,
+                  "endLine": 56,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Controllers/ReviewsController.cs",
+                "region": {
+                  "startLine": 86,
+                  "startColumn": 66,
+                  "endLine": 86,
+                  "endColumn": 74
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/DashboardService.cs",
+                "region": {
+                  "startLine": 67,
+                  "startColumn": 30,
+                  "endLine": 67,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/DashboardService.cs",
+                "region": {
+                  "startLine": 68,
+                  "startColumn": 32,
+                  "endLine": 68,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Prefer comparing 'Count' to 0 rather than using 'Any()', both for clarity and for performance",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Jobs/ScheduledJobs.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 18,
+                  "endLine": 27,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1853",
+          "level": "note",
+          "message": "Do not guard 'Dictionary.Remove(key)' with 'Dictionary.ContainsKey(key)'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/VnPayLibrary.cs",
+                "region": {
+                  "startLine": 79,
+                  "startColumn": 17,
+                  "endLine": 79,
+                  "endColumn": 64
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/VnPayLibrary.cs",
+                "region": {
+                  "startLine": 79,
+                  "startColumn": 13,
+                  "endLine": 82,
+                  "endColumn": 14
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/VnPayLibrary.cs",
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 17,
+                  "endLine": 81,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1853",
+          "level": "note",
+          "message": "Do not guard 'Dictionary.Remove(key)' with 'Dictionary.ContainsKey(key)'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/VnPayLibrary.cs",
+                "region": {
+                  "startLine": 84,
+                  "startColumn": 17,
+                  "endLine": 84,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/VnPayLibrary.cs",
+                "region": {
+                  "startLine": 84,
+                  "startColumn": 13,
+                  "endLine": 87,
+                  "endColumn": 14
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/VnPayLibrary.cs",
+                "region": {
+                  "startLine": 86,
+                  "startColumn": 17,
+                  "endLine": 86,
+                  "endColumn": 56
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1862",
+          "level": "note",
+          "message": "Prefer using 'string.Equals(string, StringComparison)' to perform a case-insensitive comparison, but keep in mind that this might cause subtle changes in behavior, so make sure to conduct thorough testing after applying the suggestion, or if culturally sensitive comparison is not required, consider using 'StringComparison.OrdinalIgnoreCase'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/AuthService.cs",
+                "region": {
+                  "startLine": 234,
+                  "startColumn": 29,
+                  "endLine": 234,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "LeftOffendingMethod": "ToLower",
+              "RightOffendingMethod": null
+            }
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Migrations/20260308083426_InitialCreate.cs",
+                "region": {
+                  "startLine": 134,
+                  "startColumn": 26,
+                  "endLine": 134,
+                  "endColumn": 95
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "columns"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Migrations/20260308083426_InitialCreate.cs",
+                "region": {
+                  "startLine": 143,
+                  "startColumn": 26,
+                  "endLine": 143,
+                  "endColumn": 87
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "columns"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Migrations/20260308083426_InitialCreate.cs",
+                "region": {
+                  "startLine": 152,
+                  "startColumn": 26,
+                  "endLine": 152,
+                  "endColumn": 118
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "columns"
+            }
+          }
+        },
+        {
+          "ruleId": "ASP0015",
+          "level": "note",
+          "message": "The header 'Authorization' can be accessed using the Authorization property",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Controllers/PaymentController.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 34,
+                  "endLine": 38,
+                  "endColumn": 66
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "HeaderName": "Authorization",
+              "ResolvedPropertyName": "Authorization"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Migrations/20260322070731_AddProductLogistics.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 26,
+                  "endLine": 38,
+                  "endColumn": 79
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "columns"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Migrations/20260322070731_AddProductLogistics.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 26,
+                  "endLine": 45,
+                  "endColumn": 88
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "columns"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Migrations/20260322070731_AddProductLogistics.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 26,
+                  "endLine": 52,
+                  "endColumn": 79
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "columns"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Migrations/20260322070731_AddProductLogistics.cs",
+                "region": {
+                  "startLine": 59,
+                  "startColumn": 26,
+                  "endLine": 59,
+                  "endColumn": 79
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "columns"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Migrations/20260322070731_AddProductLogistics.cs",
+                "region": {
+                  "startLine": 66,
+                  "startColumn": 26,
+                  "endLine": 66,
+                  "endColumn": 88
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "columns"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1862",
+          "level": "note",
+          "message": "Prefer using 'string.Equals(string, StringComparison)' to perform a case-insensitive comparison, but keep in mind that this might cause subtle changes in behavior, so make sure to conduct thorough testing after applying the suggestion, or if culturally sensitive comparison is not required, consider using 'StringComparison.OrdinalIgnoreCase'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/AuthService.cs",
+                "region": {
+                  "startLine": 284,
+                  "startColumn": 42,
+                  "endLine": 284,
+                  "endColumn": 73
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "LeftOffendingMethod": "ToLower",
+              "RightOffendingMethod": null
+            }
+          }
+        },
+        {
+          "ruleId": "CA1862",
+          "level": "note",
+          "message": "Prefer using 'string.Equals(string, StringComparison)' to perform a case-insensitive comparison, but keep in mind that this might cause subtle changes in behavior, so make sure to conduct thorough testing after applying the suggestion, or if culturally sensitive comparison is not required, consider using 'StringComparison.OrdinalIgnoreCase'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/AuthService.cs",
+                "region": {
+                  "startLine": 284,
+                  "startColumn": 77,
+                  "endLine": 284,
+                  "endColumn": 106
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "LeftOffendingMethod": "ToLower",
+              "RightOffendingMethod": null
+            }
+          }
+        },
+        {
+          "ruleId": "CA1862",
+          "level": "note",
+          "message": "Prefer using 'string.Equals(string, StringComparison)' to perform a case-insensitive comparison, but keep in mind that this might cause subtle changes in behavior, so make sure to conduct thorough testing after applying the suggestion, or if culturally sensitive comparison is not required, consider using 'StringComparison.OrdinalIgnoreCase'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/AuthService.cs",
+                "region": {
+                  "startLine": 304,
+                  "startColumn": 70,
+                  "endLine": 304,
+                  "endColumn": 101
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "LeftOffendingMethod": "ToLower",
+              "RightOffendingMethod": null
+            }
+          }
+        },
+        {
+          "ruleId": "CA1822",
+          "level": "note",
+          "message": "Member 'GenerateRefreshToken' does not access instance data and can be marked as static",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Services/AuthService.cs",
+                "region": {
+                  "startLine": 154,
+                  "startColumn": 30,
+                  "endLine": 154,
+                  "endColumn": 50
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Migrations/20260404070634_AddFlashSaleSystemConfig.cs",
+                "region": {
+                  "startLine": 96,
+                  "startColumn": 26,
+                  "endLine": 96,
+                  "endColumn": 84
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "columns"
+            }
+          }
+        },
+        {
+          "ruleId": "ASP0025",
+          "level": "note",
+          "message": "Use AddAuthorizationBuilder to register authorization services and construct policies",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/231A290063_H%C3%A0%20Quang%20Huy_GamingGear/GamingGearBackend/Program.cs",
+                "region": {
+                  "startLine": 88,
+                  "startColumn": 1,
+                  "endLine": 97,
+                  "endColumn": 3
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "ASP0015": {
+          "id": "ASP0015",
+          "shortDescription": "Suggest using IHeaderDictionary properties",
+          "defaultLevel": "note",
+          "helpUri": "https://aka.ms/aspnet/analyzers",
+          "properties": {
+            "category": "Usage",
+            "isEnabledByDefault": true
+          }
+        },
+        "ASP0025": {
+          "id": "ASP0025",
+          "shortDescription": "Use AddAuthorizationBuilder",
+          "defaultLevel": "note",
+          "helpUri": "https://aka.ms/aspnet/analyzers",
+          "properties": {
+            "category": "Usage",
+            "isEnabledByDefault": true
+          }
+        },
+        "CA1822": {
+          "id": "CA1822",
+          "shortDescription": "Mark members as static",
+          "fullDescription": "Members that do not access instance data or call instance methods can be marked as static. After you mark the methods as static, the compiler will emit nonvirtual call sites to these members. This can give you a measurable performance gain for performance-sensitive code.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "PortedFromFxCop",
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1853": {
+          "id": "CA1853",
+          "shortDescription": "Unnecessary call to 'Dictionary.ContainsKey(key)'",
+          "fullDescription": "Do not guard 'Dictionary.Remove(key)' with 'Dictionary.ContainsKey(key)'. The former already checks whether the key exists, and will not throw if it does not.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1853",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1860": {
+          "id": "CA1860",
+          "shortDescription": "Avoid using 'Enumerable.Any()' extension method",
+          "fullDescription": "Prefer using 'IsEmpty', 'Count' or 'Length' properties whichever available, rather than calling 'Enumerable.Any()'. The intent is clearer and it is more performant than using 'Enumerable.Any()' extension method.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1860",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1861": {
+          "id": "CA1861",
+          "shortDescription": "Avoid constant arrays as arguments",
+          "fullDescription": "Constant arrays passed as arguments are not reused when called repeatedly, which implies a new array is created each time. Consider extracting them to 'static readonly' fields to improve performance if the passed array is not mutated within the called method.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1861",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1862": {
+          "id": "CA1862",
+          "shortDescription": "Use the 'StringComparison' method overloads to perform case-insensitive string comparisons",
+          "fullDescription": "Avoid calling 'ToLower', 'ToUpper', 'ToLowerInvariant' and 'ToUpperInvariant' to perform case-insensitive string comparisons, as in 'string.ToLower() == string.ToLower()', because they lead to an allocation. Instead, use 'string.Equals(string, StringComparison)' to perform case-insensitive comparisons. Switching to using an overload that takes a 'StringComparison' might cause subtle changes in behavior, so it's important to conduct thorough testing after applying the suggestion. Additionally, if a culturally sensitive comparison is not required, consider using 'StringComparison.OrdinalIgnoreCase'.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1862",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CS8602": {
+          "id": "CS8602",
+          "shortDescription": "Dereference of a possibly null reference.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8602)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8604": {
+          "id": "CS8604",
+          "shortDescription": "Possible null reference argument.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8604)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8618": {
+          "id": "CS8618",
+          "shortDescription": "Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8618)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8767": {
+          "id": "CS8767",
+          "shortDescription": "Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8767)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
